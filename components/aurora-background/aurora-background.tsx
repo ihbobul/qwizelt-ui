@@ -1,10 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
 import React from "react";
+
+import { motion } from "framer-motion";
+
+import HeroHighlightDemo from "../hero-highlight-heading/hero-highlight-heading";
 import { AuroraBackground } from "../ui/aurora-background";
 import { FlipWords } from "../ui/flip-words";
-import HeroHighlightDemo from "../hero-highlight-heading/hero-highlight-heading";
 
 const words = ["Insightful", "Clever", "Smart", "Wise", "Intelligent"];
 
@@ -22,12 +24,12 @@ export default function AuroraBackgroundInitialPage() {
         className="relative flex flex-col gap-4 items-center justify-center px-4"
       >
         <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
-         Introducing <HeroHighlightDemo />
+          Introducing <HeroHighlightDemo />
         </div>
         <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
-        Build Your 
+          Build Your
           <FlipWords words={words} />
-        Quizzes in Seconds
+          Quizzes in Seconds
         </div>
         <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-16 py-2">
           Sign Up Now

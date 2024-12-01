@@ -1,8 +1,14 @@
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Link from "next/link";
 
 export default function HeroFormSignInForm() {
   return (
@@ -22,7 +28,8 @@ export default function HeroFormSignInForm() {
                   Sign in and Access Your Quizzes Instantly
                 </h1>
                 <p className="text-xl text-muted-foreground">
-                  Log in to manage, create, and share smarter quizzes effortlessly.
+                  Log in to manage, create, and share smarter quizzes
+                  effortlessly.
                 </p>
               </div>
               {/* End Title */}
@@ -64,9 +71,7 @@ export default function HeroFormSignInForm() {
                               Remember me
                             </Label>
                           </div>
-                          <Button className="mt-3 w-full">
-                            Sign In
-                          </Button>
+                          <Button className="mt-3 w-full">Sign In</Button>
                           <div className="text-center mt-3 text-sm">
                             <a
                               className="text-primary hover:underline"

@@ -1,15 +1,20 @@
+/* eslint-disable no-use-before-define */
+
 "use client";
 
 import React, { useState } from "react";
+
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+
 import {
   IconArrowLeft,
   IconBrandTabler,
   IconSettings,
   IconUserBolt,
 } from "@tabler/icons-react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import Image from "next/image";
+
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 
 const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
@@ -83,42 +88,36 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
         </SidebarBody>
       </Sidebar>
       {/* Main Content */}
-      <div className="flex flex-1 flex-col">
-        {children}
-      </div>
+      <div className="flex flex-1 flex-col">{children}</div>
     </div>
   );
 };
 
 // Logo Component
-export const Logo = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+export const Logo = () => (
+  <Link
+    href="#"
+    className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+  >
+    <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+    <motion.span
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="font-medium text-black dark:text-white whitespace-pre"
     >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium text-black dark:text-white whitespace-pre"
-      >
-        Qwizelt
-      </motion.span>
-    </Link>
-  );
-};
+      Qwizelt
+    </motion.span>
+  </Link>
+);
 
 // LogoIcon Component (Collapsed Sidebar Logo)
-export const LogoIcon = () => {
-  return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
-    </Link>
-  );
-};
+export const LogoIcon = () => (
+  <Link
+    href="#"
+    className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+  >
+    <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+  </Link>
+);
 
 export default SidebarLayout;
