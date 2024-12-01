@@ -1,3 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -6,7 +9,6 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 
 export default function HeroFormSignUpForm() {
   return (
@@ -26,8 +28,8 @@ export default function HeroFormSignUpForm() {
                   Qwizelt: Modern Quizzes, Smarter Insights
                 </h1>
                 <p className="text-xl text-muted-foreground">
-                    Create impactful quizzes in seconds with Qwizelt&apos;s advanced,
-                    intelligent quiz-making platform.
+                  Create impactful quizzes in seconds with Qwizelt&apos;s
+                  advanced, intelligent quiz-making platform.
                 </p>
               </div>
               {/* End Title */}
@@ -49,18 +51,18 @@ export default function HeroFormSignUpForm() {
                 </svg>
                 <div className="relative z-10">
                   <p className="text-xl italic">
-                  Qwizelt transformed the way we engage and assess our audience. 
-                  Quick, intuitive, and highly professional.
+                    Qwizelt transformed the way we engage and assess our
+                    audience. Quick, intuitive, and highly professional.
                   </p>
                 </div>
                 <footer className="mt-3">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
-                    <img
+                      <img
                         className="h-8 w-8 rounded-full"
                         src="https://randomuser.me/api/portraits/men/33.jpg"
                         alt="Image Description"
-                    />
+                      />
                     </div>
                     <div className="grow ms-4">
                       <div className="font-semibold">Marc Torres</div>

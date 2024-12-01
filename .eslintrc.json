@@ -1,3 +1,48 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "next/core-web-vitals",
+    "airbnb-base",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "max-len": "off",
+    "quotes": ["error", "double"],
+    "import/prefer-default-export": "off",
+    "object-curly-newline": "off",
+    "react/prop-types": "off",
+    "no-confusing-arrow": "off",
+    "implicit-arrow-linebreak": "off",
+    "function-paren-newline": "off",
+    "operator-linebreak": "off",
+    "react/react-in-jsx-scope": "off",
+    "import/extensions": [0],
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          // Side effect imports.
+          ["^\\u0000"],
+          // React imports
+          ["^react"],
+          // Packages.
+          // Things that start with a letter (or digit or underscore).
+          ["^\\w"],
+          // Packages.
+          // Things that start with a letter (or digit or underscore), or @ followed by a letter.
+          ["^@?\\w"],
+          // Absolute imports and other imports such as Vue-style @/foo.
+          // Anything not matched in another group.
+          ["^"],
+          // Relative imports.
+          // Anything that starts with a dot.
+          ["^\\."]
+        ]
+      }
+    ],
+    "import/no-extraneous-dependencies": "off",
+    "simple-import-sort/exports": "error"
+  },
+  "plugins": ["simple-import-sort"]
 }
