@@ -11,6 +11,7 @@ import Link from "next/link";
 import {
   IconArrowLeft,
   IconBrandTabler,
+  IconQuestionMark,
   IconSettings,
   IconUserBolt,
 } from "@tabler/icons-react";
@@ -21,31 +22,28 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   const links = [
     {
       label: "Dashboard",
-      href: "/",
-      icon: (
-        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      href: "/dashboard",
+      icon: <IconBrandTabler className="icon-class" />,
+    },
+    {
+      label: "Question Factory",
+      href: "/question-factory",
+      icon: <IconQuestionMark className="icon-class" />,
     },
     {
       label: "Profile",
       href: "/profile",
-      icon: (
-        <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <IconUserBolt className="icon-class" />,
     },
     {
       label: "Settings",
       href: "/settings",
-      icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <IconSettings className="icon-class" />,
     },
     {
       label: "Logout",
       href: "/logout",
-      icon: (
-        <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <IconArrowLeft className="icon-class" />,
     },
   ];
 
@@ -55,20 +53,18 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="h-screen flex overflow-hidden">
       {/* Sidebar Wrapper */}
       <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-10">
+        <SidebarBody className="flex flex-col h-full">
           {/* Sidebar Top Section */}
-          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            {/* Render Logo based on Sidebar State */}
+          <div className="flex flex-col flex-1 overflow-y-auto">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
-              {/* Render Links */}
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
             </div>
           </div>
           {/* Sidebar Footer Section */}
-          <div>
+          <div className="p-4 border-t">
             <SidebarLink
               link={{
                 label: "Manu Arora",
@@ -76,7 +72,7 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
                 icon: (
                   <Image
                     src="https://randomuser.me/api/portraits/women/44.jpg"
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
+                    className="rounded-full"
                     width={50}
                     height={50}
                     alt="Avatar"
@@ -87,8 +83,9 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </SidebarBody>
       </Sidebar>
+
       {/* Main Content */}
-      <div className="flex flex-1 flex-col">{children}</div>
+      <div className="flex-1 overflow-y-auto">{children}</div>
     </div>
   );
 };
