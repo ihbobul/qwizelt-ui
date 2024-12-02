@@ -3,6 +3,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
+// eslint-disable-next-line import/no-unresolved
+import { SsrQueryClientProvider } from "@/provider/SSRQueryClientProvider";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -25,12 +28,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <SsrQueryClientProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          {children}
+        </body>
+      </html>
+    </SsrQueryClientProvider>
   );
 }
