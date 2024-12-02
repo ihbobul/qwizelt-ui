@@ -1,11 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FileUpload } from "../ui/file-upload";
+
 import { Tag, TagInput } from "emblor";
+import { z } from "zod";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { usePostQuestion } from "@/hooks/usePostQuestion";
+
+import { FileUpload } from "../ui/file-upload";
 import {
   Form,
   FormControl,
@@ -23,16 +30,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { generateQuestionsSchema } from "./schema";
 import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
+import { generateQuestionsSchema } from "./schema";
 
 export default function CreateQuestionForm() {
   const form = useForm<z.infer<typeof generateQuestionsSchema>>({
     resolver: zodResolver(generateQuestionsSchema),
     defaultValues: {
       numberOfQuestions: 1,
-      type: "MULTIPLE_CHOICE",
+      type: "MULTIPLE_CHOICE_QUESTION",
       difficulty: "EASY",
       labels: [],
     },
@@ -44,8 +51,34 @@ export default function CreateQuestionForm() {
 
   const { setValue } = form;
 
-  const onSubmit = (data: z.infer<typeof generateQuestionsSchema>) => {
-    console.log("Form Data: ", data);
+  const { mutate: postQuestion, isPending } = usePostQuestion();
+
+  const onSubmit = async (data: z.infer<typeof generateQuestionsSchema>) => {
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("numberOfQuestions", data.numberOfQuestions.toString());
+      formData.append("type", data.type);
+      formData.append("difficulty", data.difficulty);
+      if (tags.length > 0) {
+        formData.append("label", tags.map((tag) => tag.text).join(", "));
+      }
+
+      postQuestion({ data: formData, isJson: false });
+    } else if (data.prompt) {
+      const payload = {
+        prompt: data.prompt,
+        numberOfQuestions: data.numberOfQuestions,
+        type: data.type,
+        difficulty: data.difficulty,
+        label:
+          tags.length > 0 ? tags.map((tag) => tag.text).join(", ") : undefined,
+      };
+
+      postQuestion({ data: payload, isJson: true });
+    } else {
+      console.error("Please provide either a prompt or a file.");
+    }
   };
 
   const handleFileUpload = (uploadedFile: File | null) => {
@@ -151,11 +184,15 @@ export default function CreateQuestionForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="MULTIPLE_CHOICE">
+                    <SelectItem value="MULTIPLE_CHOICE_QUESTION">
                       Multiple Choice
                     </SelectItem>
-                    <SelectItem value="TRUE_FALSE">True/False</SelectItem>
-                    <SelectItem value="SHORT_ANSWER">Short Answer</SelectItem>
+                    <SelectItem value="TRUE_OR_FALSE_QUESTION">
+                      True/False
+                    </SelectItem>
+                    <SelectItem value="SHORT_ANSWER_QUESTION">
+                      Short Answer
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <FormDescription>Choose the type of questions.</FormDescription>
@@ -221,7 +258,7 @@ export default function CreateQuestionForm() {
                   />
                 </FormControl>
                 <FormDescription className="text-left">
-                  These are the labels that you're interested in.
+                  These are the labels that you&apos;re interested in.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -233,7 +270,7 @@ export default function CreateQuestionForm() {
             type="submit"
             className="w-full py-3 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            Generate Questions
+            {isPending ? "Generating..." : "Generate Questions"}
           </button>
         </form>
       </Form>

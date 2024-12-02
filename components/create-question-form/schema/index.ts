@@ -9,7 +9,11 @@ export const generateQuestionsSchema = z
     numberOfQuestions: z
       .number()
       .min(1, "Number of questions must be at least 1"),
-    type: z.enum(["MULTIPLE_CHOICE", "TRUE_FALSE", "SHORT_ANSWER"]),
+    type: z.enum([
+      "MULTIPLE_CHOICE_QUESTION",
+      "TRUE_OR_FALSE_QUESTION",
+      "SHORT_ANSWER_QUESTION",
+    ]),
     difficulty: z.enum(["EASY", "MEDIUM", "HARD"]),
     labels: z.array(
       z.object({
