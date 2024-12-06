@@ -3,8 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
-// eslint-disable-next-line import/no-unresolved
-import { SsrQueryClientProvider } from "@/provider/SSRQueryClientProvider";
+import { TanstackProvider } from "@/provider/TanstackProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SsrQueryClientProvider>
+    <TanstackProvider>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -36,6 +35,6 @@ export default function RootLayout({
           {children}
         </body>
       </html>
-    </SsrQueryClientProvider>
+    </TanstackProvider>
   );
 }

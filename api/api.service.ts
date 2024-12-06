@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export default class ApiService {
   static baseUrl: string = "http://localhost:8080";
 
   static async post<T>(
     endpoint: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any,
     isJson: boolean,
   ): Promise<T> {
@@ -25,6 +25,71 @@ export default class ApiService {
       return response.json() as Promise<T>;
     } catch (error) {
       console.error(`[ApiService] Error in POST ${url}:`, error);
+      throw error;
+    }
+  }
+
+  static async get<T>(endpoint: string): Promise<T> {
+    const url = `${this.baseUrl}${endpoint}`;
+    const options: RequestInit = {
+      method: "GET",
+    };
+
+    try {
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Request to ${endpoint} failed.`);
+      }
+
+      return response.json() as Promise<T>;
+    } catch (error) {
+      console.error(`[ApiService] Error in GET ${url}:`, error);
+      throw error;
+    }
+  }
+
+  static async put<T>(endpoint: string, data: any): Promise<T> {
+    const url = `${this.baseUrl}${endpoint}`;
+    const options: RequestInit = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+
+    try {
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Request to ${endpoint} failed.`);
+      }
+
+      return response.json() as Promise<T>;
+    } catch (error) {
+      console.error(`[ApiService] Error in PUT ${url}:`, error);
+      throw error;
+    }
+  }
+
+  static async delete<T>(endpoint: string): Promise<T> {
+    const url = `${this.baseUrl}${endpoint}`;
+    const options: RequestInit = {
+      method: "DELETE",
+    };
+
+    try {
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Request to ${endpoint} failed.`);
+      }
+
+      return response.json() as Promise<T>;
+    } catch (error) {
+      console.error(`[ApiService] Error in DELETE ${url}:`, error);
       throw error;
     }
   }
