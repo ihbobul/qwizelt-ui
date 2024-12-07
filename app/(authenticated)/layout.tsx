@@ -17,6 +17,7 @@ import {
 } from "@tabler/icons-react";
 
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
+import { ListIcon } from "lucide-react";
 
 const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   const links = [
@@ -26,9 +27,14 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
       icon: <IconBrandTabler className="icon-class" />,
     },
     {
-      label: "Question Factory",
+      label: "Create New Question",
       href: "/question-factory",
       icon: <IconQuestionMark className="icon-class" />,
+    },
+    {
+      label: "Question List",
+      href: "/questions",
+      icon: <ListIcon className="icon-class" />,
     },
     {
       label: "Profile",
@@ -50,7 +56,7 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="h-screen flex overflow-hidden">
+    <div className="h-screen flex overflow-hidden relative">
       {/* Sidebar Wrapper */}
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="flex flex-col h-full">
@@ -84,8 +90,12 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
         </SidebarBody>
       </Sidebar>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-y-auto">{children}</div>
+      {/* Main Content with background */}
+      <div className="flex-1 overflow-y-auto bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 relative z-10">
+        {/* Background blur lines */}
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 opacity-70 blur-xl z-0"></div>
+        <div className="relative z-10">{children}</div>
+      </div>
     </div>
   );
 };

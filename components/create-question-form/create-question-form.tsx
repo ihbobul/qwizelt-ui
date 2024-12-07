@@ -50,7 +50,6 @@ export default function CreateQuestionForm() {
   const [file, setFile] = useState<File | null>(null);
 
   const { setValue } = form;
-
   const { mutate: postQuestion, isPending } = usePostQuestion();
 
   const onSubmit = async (data: z.infer<typeof generateQuestionsSchema>) => {
@@ -88,7 +87,7 @@ export default function CreateQuestionForm() {
   };
 
   return (
-    <div className="max-w-4xl p-8 bg-white rounded-lg">
+    <div className="max-w-4xl p-8 bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 bg-opacity-80 backdrop-blur-lg rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">
         Generate Questions
       </h2>
@@ -106,7 +105,7 @@ export default function CreateQuestionForm() {
                     placeholder="Enter the prompt for the question"
                     {...field}
                     disabled={!!file} // Disable prompt if file is provided
-                    className="border-gray-300 focus:ring-2 focus:ring-blue-500 p-3 rounded-md w-full resize-none"
+                    className="border-gray-300 focus:ring-2 focus:ring-blue-500 p-4 rounded-md w-full resize-none bg-white/60 dark:bg-gray-700 text-gray-800 dark:text-white"
                   />
                 </FormControl>
                 <FormDescription>
@@ -159,7 +158,7 @@ export default function CreateQuestionForm() {
                     onChange={(e) => {
                       field.onChange(Number(e.target.value));
                     }}
-                    className="border-gray-300 focus:ring-2 focus:ring-blue-500 p-3 rounded-md w-full"
+                    className="border-gray-300 focus:ring-2 focus:ring-blue-500 p-4 rounded-md w-full bg-white/60 dark:bg-gray-700 text-gray-800 dark:text-white"
                   />
                 </FormControl>
                 <FormDescription>
@@ -179,7 +178,7 @@ export default function CreateQuestionForm() {
                 <FormLabel>Type</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <SelectTrigger className="p-3 border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md w-full">
+                    <SelectTrigger className="p-4 border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md w-full bg-white/60 dark:bg-gray-700 text-gray-800 dark:text-white">
                       <SelectValue placeholder="Select question type" />
                     </SelectTrigger>
                   </FormControl>
@@ -210,7 +209,7 @@ export default function CreateQuestionForm() {
                 <FormLabel>Difficulty</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <SelectTrigger className="p-3 border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md w-full">
+                    <SelectTrigger className="p-4 border-gray-300 focus:ring-2 focus:ring-blue-500 rounded-md w-full bg-white/60 dark:bg-gray-700 text-gray-800 dark:text-white">
                       <SelectValue placeholder="Select difficulty" />
                     </SelectTrigger>
                   </FormControl>
@@ -248,7 +247,7 @@ export default function CreateQuestionForm() {
                     setActiveTagIndex={setActiveTagIndex}
                     styleClasses={{
                       input:
-                        "border-gray-300 focus:ring-2 focus:ring-blue-500 p-6 rounded-md w-full",
+                        "border-gray-300 focus:ring-2 focus:ring-blue-500 p-4 rounded-md w-full bg-white/60 dark:bg-gray-700 text-gray-800 dark:text-white",
                       inlineTagsContainer: "p-2",
                       tag: {
                         body: "p-2 bg-blue-500 text-white hover:bg-blue-600",
@@ -258,7 +257,7 @@ export default function CreateQuestionForm() {
                   />
                 </FormControl>
                 <FormDescription className="text-left">
-                  These are the labels that you&apos;re interested in.
+                  These are the labels that you're interested in.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -268,7 +267,7 @@ export default function CreateQuestionForm() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-3 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full py-3 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           >
             {isPending ? "Generating..." : "Generate Questions"}
           </button>

@@ -20,7 +20,7 @@ export default function Dashboard() {
       {/* Cards Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {/* Example Cards for Metrics or Actions */}
-        <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <div className="bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 bg-opacity-80 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow backdrop-blur-lg">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
             Total Questions
           </h3>
@@ -30,7 +30,7 @@ export default function Dashboard() {
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <div className="bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 bg-opacity-80 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
             Activities
           </h3>
@@ -40,7 +40,7 @@ export default function Dashboard() {
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <div className="bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 bg-opacity-80 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
             Profile Settings
           </h3>

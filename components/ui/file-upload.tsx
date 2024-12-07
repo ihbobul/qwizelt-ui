@@ -17,10 +17,10 @@ export const FileUpload = ({
   };
 
   return (
-    <div className="flex flex-col items-center space-y-2">
+    <div className="flex flex-col items-center space-y-4">
       {file ? (
         <div className="flex items-center space-x-2">
-          <span className="text-sm">
+          <span className="text-sm text-gray-800 dark:text-white">
             {file.name} ({(file.size / (1024 * 1024)).toFixed(2)} MB)
           </span>
           <button
@@ -35,7 +35,7 @@ export const FileUpload = ({
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-md"
+          className="w-full px-4 py-2 bg-white/60 dark:bg-gray-700/60 text-gray-700 dark:text-white rounded-md hover:bg-white/80 dark:hover:bg-gray-600 transition-colors"
         >
           Upload File
         </button>

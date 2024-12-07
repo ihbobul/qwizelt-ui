@@ -4,7 +4,7 @@ import CreateQuestionForm from "@/components/create-question-form/create-questio
 
 export default function QuestionFactory() {
   return (
-    <div className="min-h-screen overflow-y-auto bg-gray-50 py-10 px-4 md:px-8">
+    <div className="min-h-screen overflow-y-auto py-10 px-4 md:px-8">
       {/* Header Section */}
       <div className="max-w-5xl mx-auto text-center mb-12">
         <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
@@ -20,7 +20,7 @@ export default function QuestionFactory() {
       {/* Layout */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Informational Section */}
-        <div className="bg-white p-8 shadow-lg rounded-lg">
+        <div className="bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 bg-opacity-80 p-8 shadow-lg rounded-lg">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
             What is the Question Factory?
           </h2>

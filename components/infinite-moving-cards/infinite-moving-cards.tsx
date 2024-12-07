@@ -6,7 +6,7 @@ import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
 
 export default function InfiniteMovingCardsDemo() {
   return (
-    <div className="rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative">
+    <div className="rounded-md flex flex-col antialiased bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 bg-opacity-80 dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative">
       <InfiniteMovingCards
         items={testimonials}
         pauseOnHover={false}
