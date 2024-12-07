@@ -52,4 +52,24 @@ export default class QuestionService {
   static async removeQuestion(questionId: number) {
     return ApiService.delete<any>(`/questions/remove/${questionId}`);
   }
+
+  static async exportQuestions(ids: number[]) {
+    const baseUrl = "http://localhost:8080"; // Adjust for your backend
+    const endpoint = "/questions/export";
+    const queryParams = new URLSearchParams();
+    queryParams.append("ids", ids.join(","));
+
+    const url = `${baseUrl}${endpoint}?${queryParams.toString()}`;
+    console.log("Export URL:", url); // Debugging
+
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to export questions: ${response.statusText}`);
+    }
+
+    return response.blob();
+  }
 }
