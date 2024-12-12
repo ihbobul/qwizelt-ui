@@ -1,30 +1,48 @@
 "use client";
 
 import { useState } from "react";
+
+import { EditIcon } from "lucide-react";
+
 import { IconCancel, IconFileExport } from "@tabler/icons-react";
+
 import QuestionService from "@/api/question.service";
+import Pagination from "@/components/pagination/pagination";
+import QuestionCard from "@/components/question-card/question-card";
 import { Button } from "@/components/ui/button";
 import { useGetQuestions } from "@/hooks/useGetQuestions";
-import QuestionCard from "@/components/question-card/question-card";
-import { EditIcon } from "lucide-react";
 
 const QuestionPage: React.FC = () => {
   const { data, error, isLoading } = useGetQuestions();
-  const [selectedQuestions, setSelectedQuestions] = useState<Set<number>>(
-    new Set(),
-  );
+  const [selectedQuestions, setSelectedQuestions] = useState<
+    Record<number, Set<number>>
+  >({});
   const [isExporting, setIsExporting] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false); // New state to manage edit mode
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [questionsPerPage, setQuestionsPerPage] = useState(5);
 
-  const handleSelectQuestion = (id: number) => {
-    setSelectedQuestions((prevSelected) => {
-      const updatedSelection = new Set(prevSelected);
-      if (updatedSelection.has(id)) {
-        updatedSelection.delete(id);
+  const handleSelectQuestion = (id: number, page: number) => {
+    setSelectedQuestions((prev) => {
+      const updatedPageSet = new Set<number>(prev[page] || []);
+      if (updatedPageSet.has(id)) {
+        updatedPageSet.delete(id);
       } else {
-        updatedSelection.add(id);
+        updatedPageSet.add(id);
       }
-      return updatedSelection;
+      return { ...prev, [page]: updatedPageSet };
+    });
+  };
+
+  const handleSelectAll = (page: number, currentQuestions: number[]) => {
+    setSelectedQuestions((prev) => {
+      const isPageFullySelected =
+        (prev[page]?.size || 0) === currentQuestions.length;
+      const updatedPageSet = isPageFullySelected
+        ? new Set<number>() // Deselect all
+        : new Set<number>(currentQuestions); // Select all
+
+      return { ...prev, [page]: updatedPageSet };
     });
   };
 
@@ -32,7 +50,10 @@ const QuestionPage: React.FC = () => {
     setIsExporting(true);
 
     try {
-      const selectedIds = Array.from(selectedQuestions);
+      // Aggregate all selected questions across pages
+      const selectedIds = Object.values(selectedQuestions).flatMap((set) =>
+        Array.from(set),
+      );
 
       // Call exportQuestions from QuestionService
       const blob = await QuestionService.exportQuestions(selectedIds);
@@ -50,7 +71,8 @@ const QuestionPage: React.FC = () => {
       window.URL.revokeObjectURL(url);
 
       // Reset the selection after successful export
-      setSelectedQuestions(new Set());
+      setSelectedQuestions({});
+      // eslint-disable-next-line no-shadow
     } catch (error) {
       console.error("Error exporting questions:", error);
     } finally {
@@ -59,7 +81,14 @@ const QuestionPage: React.FC = () => {
   };
 
   const toggleEditMode = () => {
-    setIsEditMode((prevMode) => !prevMode); // Toggle edit mode
+    setIsEditMode((prevMode) => !prevMode);
+  };
+
+  const handleQuestionsPerPageChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    setQuestionsPerPage(Number(event.target.value));
+    setCurrentPage(1); // Reset to the first page on change
   };
 
   if (isLoading) {
@@ -74,6 +103,17 @@ const QuestionPage: React.FC = () => {
     );
   }
 
+  const totalQuestions = data?.length || 0;
+  const totalPages = Math.ceil(totalQuestions / questionsPerPage);
+  const paginatedQuestions = data?.slice(
+    (currentPage - 1) * questionsPerPage,
+    currentPage * questionsPerPage,
+  );
+
+  const areAllSelectedOnPage =
+    paginatedQuestions &&
+    selectedQuestions[currentPage]?.size === paginatedQuestions.length;
+
   return (
     <div className="max-w-full mx-auto px-4 py-12">
       <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
@@ -84,12 +124,47 @@ const QuestionPage: React.FC = () => {
         questions you want to export and click &quot;Export Selected.&quot;
       </p>
 
-      <div className="flex justify-between">
-        <div className="text-center mb-4">
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            checked={areAllSelectedOnPage}
+            onChange={() =>
+              handleSelectAll(
+                currentPage,
+                paginatedQuestions?.map((q) => q.id) || [],
+              )
+            }
+            className="mr-2"
+          />
+          <span className="text-gray-700">Select All on Page</span>
+        </div>
+
+        <div className="flex items-center space-x-4">
+          <label htmlFor="questionsPerPage" className="text-gray-700">
+            Show per page:
+          </label>
+          <select
+            id="questionsPerPage"
+            value={questionsPerPage}
+            onChange={handleQuestionsPerPageChange}
+            className="border-gray-300 rounded px-2 py-1"
+          >
+            {[5, 10, 20].map((count) => (
+              <option key={count} value={count}>
+                {count}
+              </option>
+            ))}
+          </select>
+
           <Button
             variant="outline"
             onClick={toggleEditMode}
-            className={`flex items-center ${isEditMode ? "text-red-600 border-red-600 hover:text-red-600 hover:border-red-600" : "text-indigo-600 border-indigo-600/60 hover:text-indigo-600 hover:border-indigo-600"}`}
+            className={`flex items-center ${
+              isEditMode
+                ? "text-red-600 border-red-600 hover:text-red-600 hover:border-red-600"
+                : "text-indigo-600 border-indigo-600/60 hover:text-indigo-600 hover:border-indigo-600"
+            }`}
           >
             {isEditMode ? "Exit Edit Mode" : "Enter Edit Mode"}
             {isEditMode ? (
@@ -98,37 +173,44 @@ const QuestionPage: React.FC = () => {
               <EditIcon className="ml-2 h-4 w-4" />
             )}
           </Button>
-        </div>
 
-        {/* Export Selected Button (only visible if questions are selected) */}
-        {selectedQuestions.size > 0 && (
-          <div className="text-right mb-4">
+          {Object.values(selectedQuestions).flat().length > 0 && (
             <Button
-              variant="default" // Using a default variant for a filled button
+              variant="default"
               onClick={handleExport}
               disabled={isExporting}
-              className={`flex items-center ${isExporting ? "bg-green-300 text-gray-600" : "bg-green-600 text-white hover:bg-green-700"}`}
+              className={`flex items-center ${
+                isExporting
+                  ? "bg-green-300 text-gray-600"
+                  : "bg-green-600 text-white hover:bg-green-700"
+              }`}
             >
               <IconFileExport className="mr-2 h-4 w-4" />
               {isExporting ? "Exporting..." : "Export Selected"}
             </Button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      {/* Edit Mode Toggle Button */}
-
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {data?.map((question) => (
+        {paginatedQuestions?.map((question) => (
           <QuestionCard
             key={question.id}
             question={question}
-            isSelected={selectedQuestions.has(question.id)}
-            onSelect={handleSelectQuestion}
-            isEditMode={isEditMode} // Pass the edit mode state to QuestionCard
+            isSelected={
+              selectedQuestions[currentPage]?.has(question.id) || false
+            }
+            onSelect={() => handleSelectQuestion(question.id, currentPage)}
+            isEditMode={isEditMode}
           />
         ))}
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
     </div>
   );
 };

@@ -5,6 +5,7 @@
 import React, { useState } from "react";
 
 import { motion } from "framer-motion";
+import { ListIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,7 +18,6 @@ import {
 } from "@tabler/icons-react";
 
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { ListIcon } from "lucide-react";
 
 const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   const links = [
