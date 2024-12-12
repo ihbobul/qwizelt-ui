@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import {
   CheckCircleIcon,
   Edit2Icon,
@@ -11,6 +12,8 @@ import {
 } from "lucide-react";
 
 import { Question } from "@/api/types";
+// Import PromptCard
+import PromptCard from "@/components/prompt-card/prompt-card"; // Ensure the path is correct
 import { Badge } from "@/components/ui/badge";
 import { useAddVariant } from "@/hooks/useAddVariant";
 import { useEditQuestion } from "@/hooks/useEditQuestion";
@@ -22,17 +25,6 @@ import { useRemoveVariant } from "@/hooks/useRemoveVariant";
 import { Button } from "../ui/button";
 import VariantCreateDialog from "../variant-create-dialog/variant-create-dialog";
 import VariantEditDialog from "../variant-edit-dialog/variant-edit-dialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogTitle,
-} from "../ui/dialog";
-import { Textarea } from "../ui/textarea";
-
-// Import PromptCard
-import PromptCard from "@/components/prompt-card/prompt-card"; // Ensure the path is correct
 
 const getDifficultyColor = (difficulty: string): string => {
   switch (difficulty.toLowerCase()) {
@@ -121,7 +113,7 @@ const QuestionCard: React.FC<{
 
   return (
     <div
-      className={`relative bg-white rounded-lg shadow-lg p-4 md:p-6 space-y-4 hover:shadow-xl transition-all ${isSelected ? "bg-indigo-100" : ""}`}
+      className={`relative bg-white rounded-lg shadow-lg p-4 md:p-6 space-y-4 hover:shadow-xl transition-all ${isSelected ? "bg-indigo-200" : ""}`}
     >
       {/* Blur overlay during regeneration */}
       {isLoading && (

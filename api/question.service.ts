@@ -72,4 +72,21 @@ export default class QuestionService {
 
     return response.blob();
   }
+
+  static async getFilteredQuestions(
+    label: string,
+    orderBy: "ASC" | "DESC",
+    page: number,
+    limit: number,
+  ) {
+    const endpoint = "/questions/filter";
+    const queryParams = new URLSearchParams({
+      label,
+      orderBy,
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+
+    return ApiService.get<any>(`${endpoint}?${queryParams.toString()}`);
+  }
 }
