@@ -113,7 +113,7 @@ const QuestionCard: React.FC<{
 
   return (
     <div
-      className={`relative bg-white rounded-lg shadow-lg p-4 md:p-6 space-y-4 hover:shadow-xl transition-all ${isSelected ? "bg-indigo-200" : ""}`}
+      className={`relative bg-white rounded-lg shadow-lg p-4 md:p-6 space-y-4 hover:shadow-xl transition-all ${isSelected ? "bg-indigo-100" : ""}`}
     >
       {/* Blur overlay during regeneration */}
       {isLoading && (

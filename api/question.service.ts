@@ -75,16 +75,16 @@ export default class QuestionService {
 
   static async getFilteredQuestions(
     label: string,
-    orderBy: "ASC" | "DESC",
-    page: number,
-    limit: number,
+    orderBy?: "ASC" | "DESC",
+    page?: number,
+    limit?: number,
   ) {
     const endpoint = "/questions/filter";
     const queryParams = new URLSearchParams({
       label,
-      orderBy,
-      page: page.toString(),
-      limit: limit.toString(),
+      orderBy: "ASC",
+      page: (page ?? 1).toString(),
+      limit: (limit ?? 10).toString(),
     });
 
     return ApiService.get<any>(`${endpoint}?${queryParams.toString()}`);
