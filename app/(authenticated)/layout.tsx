@@ -8,18 +8,20 @@ import { motion } from "framer-motion";
 import { ListIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 
 import {
   IconArrowLeft,
   IconBrandTabler,
   IconQuestionMark,
-  IconSettings,
   IconUserBolt,
 } from "@tabler/icons-react";
 
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 
 const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
+  const { data } = useSession();
+
   const links = [
     {
       label: "Dashboard",
@@ -42,14 +44,10 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
       icon: <IconUserBolt className="icon-class" />,
     },
     {
-      label: "Settings",
-      href: "/settings",
-      icon: <IconSettings className="icon-class" />,
-    },
-    {
       label: "Logout",
-      href: "/logout",
+      href: "#",
       icon: <IconArrowLeft className="icon-class" />,
+      onClick: () => signOut({ callbackUrl: "/auth/signin" }),
     },
   ];
 
@@ -73,14 +71,14 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
           <div className="p-4 border-t">
             <SidebarLink
               link={{
-                label: "Manu Arora",
+                label: data?.user?.email || "User",
                 href: "#",
                 icon: (
                   <Image
-                    src="https://randomuser.me/api/portraits/women/44.jpg"
+                    src={"https://www.gravatar.com/avatar?d=identicon"}
                     className="rounded-full"
-                    width={50}
-                    height={50}
+                    width={30}
+                    height={30}
                     alt="Avatar"
                   />
                 ),

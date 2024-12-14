@@ -1,2 +1,4 @@
 /components/ui/
-/hooks/useAddVariant.ts
+/components/hooks/
+/lib/
+/hooks/

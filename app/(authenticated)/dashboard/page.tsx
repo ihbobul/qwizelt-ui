@@ -1,8 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+
 import InfiniteMovingCardsDemo from "@/components/infinite-moving-cards/infinite-moving-cards";
 
 export default function Dashboard() {
+  const { data } = useSession();
+  const router = useRouter();
+
   return (
     <div className="mb-8 p-4">
       {/* Dashboard Header */}
@@ -12,7 +18,8 @@ export default function Dashboard() {
             Dashboard
           </h2>
           <p className="text-gray-500 dark:text-gray-400">
-            Welcome back, User! We are thrilled to have you here.
+            Welcome back, {data?.user.firstName}! We are thrilled to have you
+            here.
           </p>
         </div>
       </div>
@@ -30,7 +37,10 @@ export default function Dashboard() {
           </p>
         </div>
 
-        <div className="bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 bg-opacity-80 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <div
+          className="bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 bg-opacity-80 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow"
+          onClick={() => router.push("/question-factory")}
+        >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
             Activities
           </h3>
@@ -40,7 +50,10 @@ export default function Dashboard() {
           </p>
         </div>
 
-        <div className="bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 bg-opacity-80 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <div
+          className="bg-gradient-to-r from-indigo-50 via-gray-100 to-indigo-50 bg-opacity-80 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow"
+          onClick={() => router.push("/profile")}
+        >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
             Profile Settings
           </h3>
