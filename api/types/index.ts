@@ -27,3 +27,11 @@ export interface NewVariant {
     question: string;
   };
 }
+
+export interface RegisterParams {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  organization?: string;
+}

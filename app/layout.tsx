@@ -3,7 +3,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
-import { TanstackProvider } from "@/provider/TanstackProvider";
+import { Toaster } from "@/components/ui/toaster";
+import Providers from "@/provider/Providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,14 +28,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <TanstackProvider>
+    <Providers>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           {children}
+          <Toaster />
         </body>
       </html>
-    </TanstackProvider>
+    </Providers>
   );
 }

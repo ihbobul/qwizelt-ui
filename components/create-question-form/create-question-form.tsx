@@ -257,7 +257,7 @@ export default function CreateQuestionForm() {
                   />
                 </FormControl>
                 <FormDescription className="text-left">
-                  These are the labels that you're interested in.
+                  These are the labels that you&apos;re interested in.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

@@ -1,6 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
 
+"use client";
+
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { EyeClosedIcon, EyeIcon } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import * as z from "zod";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { useToast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,9 +20,124 @@ import {
   CardDescription,
   CardHeader,
 } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ToastAction } from "@/components/ui/toast";
+import { useRegister } from "@/hooks/useRegister";
+
+const formSchema = z.object({
+  firstName: z
+    .string({
+      required_error: "First name is required",
+      invalid_type_error: "First name must be a string",
+    })
+    .min(1, {
+      message: "First name must be at least 1 character long",
+    }),
+  lastName: z
+    .string({
+      required_error: "Last name is required",
+      invalid_type_error: "Last name must be a string",
+    })
+    .min(1, {
+      message: "Last name must be at least 1 character long",
+    }),
+  email: z
+    .string({
+      required_error: "Email is required",
+      invalid_type_error: "Email must be a string",
+    })
+    .email({
+      message: "Invalid email address",
+    }),
+  organization: z
+    .string({
+      invalid_type_error: "Organization must be a string",
+    })
+    .min(1, {
+      message: "Organization must be at least 1 characters long",
+    })
+    .optional(),
+  password: z
+    .string({
+      required_error: "Password is required",
+      invalid_type_error: "Password must be a string",
+    })
+    .min(8, {
+      message: "Password must be at least 8 characters long",
+    }),
+});
 
 export default function HeroFormSignUpForm() {
+  const router = useRouter();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      organization: "",
+    },
+  });
+
+  const { toast } = useToast();
+  const {
+    mutate: register,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+  } = useRegister();
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    register({
+      email: values.email,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      password: values.password,
+      organization: values.organization,
+    });
+  }
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      form.reset();
+      toast({
+        title: "Congratulations!",
+        description: "Your account has been created successfully. ✅",
+        duration: 5000,
+        action: (
+          <ToastAction
+            altText="Sign In"
+            onClick={() => router.push("/auth/signin")}
+          >
+            Sign In
+          </ToastAction>
+        ),
+      });
+    }
+    if (isError) {
+      toast({
+        title: `Error: ${error?.message}`,
+        description: "Failed to create your account. Please try again. ❌",
+      });
+    }
+  }, [isSuccess, isError, toast]);
+
   return (
     <>
       {/* Hero */}
@@ -78,47 +205,129 @@ export default function HeroFormSignUpForm() {
             {/* End Col */}
             <div>
               {/* Form */}
-              <form>
-                <div className="lg:max-w-lg lg:mx-auto lg:me-0 ms-auto">
-                  {/* Card */}
-                  <Card>
-                    <CardHeader className="text-center">
-                      <h2 className="text-2xl font-semibold leading-none tracking-tight">
-                        Start creating smarter quizzes for free
-                      </h2>
-                      <CardDescription>
-                        Already have an account?{" "}
-                        <Link
-                          className="text-primary hover:underline underline-offset-4"
-                          href="/auth/signin"
-                        >
-                          Sign in here
-                        </Link>
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="mt-5">
-                        {/* Grid */}
-                        <div className="grid grid-cols-2 gap-4">
-                          <Input placeholder="First name" />
-                          <Input placeholder="Last name" />
-                          <Input placeholder="Email" />
-                          <Input placeholder="Company name" />
-                          <Input
-                            className="col-span-2"
-                            placeholder="Password"
-                          />
-                          <Button className="mt-3 col-span-2">
-                            Get started
-                          </Button>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <div className="lg:max-w-lg lg:mx-auto lg:me-0 ms-auto">
+                    {/* Card */}
+                    <Card>
+                      <CardHeader className="text-center">
+                        <h2 className="text-2xl font-semibold leading-none tracking-tight">
+                          Start creating smarter quizzes for free
+                        </h2>
+                        <CardDescription>
+                          Already have an account?{" "}
+                          <Link
+                            className="text-primary hover:underline underline-offset-4"
+                            href="/auth/signin"
+                          >
+                            Sign in here
+                          </Link>
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="mt-5">
+                          {/* Grid */}
+                          <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                              control={form.control}
+                              name="firstName"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Input
+                                      {...field}
+                                      placeholder="First name"
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="lastName"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Input {...field} placeholder="Last name" />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="email"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Input {...field} placeholder="Email" />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="organization"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Input
+                                      {...field}
+                                      placeholder="Company name"
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="password"
+                              render={({ field }) => (
+                                <FormItem className="col-span-2 relative">
+                                  <FormControl>
+                                    <div className="relative">
+                                      <Input
+                                        {...field}
+                                        type={
+                                          passwordVisible ? "text" : "password"
+                                        }
+                                        placeholder="Password"
+                                        className="pr-10" // Add padding for the eye icon
+                                      />
+                                      <button
+                                        type="button"
+                                        onClick={togglePasswordVisibility}
+                                        className="absolute inset-y-0 right-2 flex items-center text-muted-foreground"
+                                      >
+                                        {passwordVisible ? (
+                                          <EyeClosedIcon className="w-5 h-5" />
+                                        ) : (
+                                          <EyeIcon className="w-5 h-5" />
+                                        )}
+                                      </button>
+                                    </div>
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <Button className="mt-3 col-span-2" type="submit">
+                              {isPending
+                                ? "Creating account..."
+                                : "Get Started"}
+                            </Button>
+                          </div>
+                          {/* Grid End */}
                         </div>
-                        {/* Grid End */}
-                      </div>
-                    </CardContent>
-                  </Card>
-                  {/* End Card */}
-                </div>
-              </form>
+                      </CardContent>
+                    </Card>
+                    {/* End Card */}
+                  </div>
+                </form>
+              </Form>
               {/* End Form */}
             </div>
             {/* End Col */}
