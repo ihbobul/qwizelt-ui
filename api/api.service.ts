@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class ApiService {
-  static baseUrl: string = "http://localhost:8080";
+  static baseUrl: string = `${process.env.NEXT_PUBLIC_API_URL}`;
 
   static async post<T>(
     endpoint: string,
