@@ -54,13 +54,13 @@ export default class QuestionService {
   }
 
   static async exportQuestions(ids: number[]) {
-    const baseUrl = "http://localhost:8080"; // Adjust for your backend
+    const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}`;
     const endpoint = "/questions/export";
     const queryParams = new URLSearchParams();
     queryParams.append("ids", ids.join(","));
 
     const url = `${baseUrl}${endpoint}?${queryParams.toString()}`;
-    console.log("Export URL:", url); // Debugging
+    console.log("Export URL:", url);
 
     const response = await fetch(url, {
       method: "GET",
