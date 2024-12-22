@@ -72,10 +72,7 @@ export default function CreateQuestionForm() {
         numberOfQuestions: data.numberOfQuestions,
         type: data.type,
         difficulty: data.difficulty,
-        labels:
-          tags.length > 0
-            ? JSON.stringify(tags.map((tag) => tag.text))
-            : undefined,
+        labels: tags.length > 0 ? tags.map((tag) => tag.text) : undefined,
       };
 
       postQuestion({ data: payload, isJson: true });
