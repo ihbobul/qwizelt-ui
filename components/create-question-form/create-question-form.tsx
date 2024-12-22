@@ -60,7 +60,9 @@ export default function CreateQuestionForm() {
       formData.append("type", data.type);
       formData.append("difficulty", data.difficulty);
       if (tags.length > 0) {
-        formData.append("label", tags.map((tag) => tag.text).join(", "));
+        tags.forEach((tag) => {
+          formData.append("labels", tag.text);
+        });
       }
 
       postQuestion({ data: formData, isJson: false });
@@ -70,8 +72,10 @@ export default function CreateQuestionForm() {
         numberOfQuestions: data.numberOfQuestions,
         type: data.type,
         difficulty: data.difficulty,
-        label:
-          tags.length > 0 ? tags.map((tag) => tag.text).join(", ") : undefined,
+        labels:
+          tags.length > 0
+            ? JSON.stringify(tags.map((tag) => tag.text))
+            : undefined,
       };
 
       postQuestion({ data: payload, isJson: true });
