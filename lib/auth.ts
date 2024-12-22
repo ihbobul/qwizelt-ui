@@ -52,21 +52,41 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
-        const { email, password } = credentials;
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-            credentials: "include",
-          },
-        );
-        if (res.status === 400) return null;
+        try {
+          if (!credentials?.email || !credentials?.password) {
+            console.error("Missing email or password in credentials.");
+            return null;
+          }
+          const { email, password } = credentials;
 
-        const user = await res.json();
-        return user;
+          console.log("Attempting to log in user:", { email });
+
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+              credentials: "include",
+            },
+          );
+
+          if (!res.ok) {
+            const errorDetails = await res.text(); // Capture server's error response
+            console.error(
+              `Login failed with status ${res.status}:`,
+              errorDetails,
+            );
+            return null;
+          }
+
+          const user = await res.json();
+          console.log("Login successful for user:", { email, user });
+          return user;
+        } catch (error) {
+          console.error("An error occurred during authorization:", error);
+          return null;
+        }
       },
     }),
   ],
