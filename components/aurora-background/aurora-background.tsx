@@ -3,6 +3,7 @@
 import React from "react";
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 import HeroHighlightDemo from "../hero-highlight-heading/hero-highlight-heading";
 import { AuroraBackground } from "../ui/aurora-background";
@@ -11,6 +12,8 @@ import { FlipWords } from "../ui/flip-words";
 const words = ["Insightful", "Clever", "Smart", "Wise", "Intelligent"];
 
 export default function AuroraBackgroundInitialPage() {
+  const router = useRouter();
+
   return (
     <AuroraBackground>
       <motion.div
@@ -31,7 +34,10 @@ export default function AuroraBackgroundInitialPage() {
           <FlipWords words={words} />
           Quizzes in Seconds
         </div>
-        <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-16 py-2">
+        <button
+          className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-16 py-2"
+          onClick={() => router.push("/auth/signup")}
+        >
           Sign Up Now
         </button>
       </motion.div>
