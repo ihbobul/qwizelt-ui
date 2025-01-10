@@ -8,7 +8,8 @@ export const generateQuestionsSchema = z
       .refine((val) => val?.trim() || !val, "Prompt cannot be empty."),
     numberOfQuestions: z
       .number()
-      .min(1, "Number of questions must be at least 1"),
+      .min(1, "Number of questions must be at least 1")
+      .max(20, "Number of questions must be at most 20"),
     type: z.enum([
       "MULTIPLE_CHOICE_QUESTION",
       "TRUE_OR_FALSE_QUESTION",
